@@ -3,8 +3,7 @@ Create an Invoice
 */
 
 
-
-Declare @RefNo varchar(50) = '17181/POL/000025-511'
+Declare @RefNo varchar(50) = '17181/END/000262-563'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -27,7 +26,7 @@ left join PaymentApplication c on (b.Id = c.PremiumSchedule_Id)
 left join Payment d on (c.Payment_Id = d.Id)
 left join PaymentRole f on (f.Payment_Id = d.Id)
 left join PolicyItemPremium e on (b.Id = e.PremiumSchedule_Id)
-where a.ReferenceNumber = @RefNo and a.Discriminator = 'InsurancePolicy'
+where a.ReferenceNumber = @RefNo
 
 DECLARE @PaymentTarget_Id uniqueidentifier = newId()
 DECLARE @InAppId uniqueidentifier
@@ -62,6 +61,7 @@ DECLARE @PartyRoleId varchar(100)
 			   SET @Disciminator = 'InsuranceCustomerReceipt'
 			   SET @TypeId = '1634B132-4285-4D54-87A9-6A3770A0AD2D'
 		   END
+		
 		ELSE
 			BEGIN
 				SET @Disciminator = 'InsuranceCustomerReceipt'
@@ -219,12 +219,11 @@ BEGIN TRY
 		left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null)
 		left join PersonName e on (a.Party_Id = e.Person_Id and e.ThruDate is null)
 		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4') --�Ţ�����������
-		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����
+		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����	
 		left join Citizenship h on (a.Party_Id = h.Person_Id)
 		left join PersonIdentification i on (i.Citizenship_Id = h.Id and i.[Type_Id] is not null)
-		inner join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and i.Id = j.DependencyContextItemId)
+		left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and j.DependencyContextItemId = i.Id)
 		where a.Id = @PartyRoleId --@PartyRole
-
 
 		IF @@ROWCOUNT = 0
 			ROLLBACK
