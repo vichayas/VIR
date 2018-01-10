@@ -4,7 +4,7 @@ Create an Invoice
 
 
 
-Declare @RefNo varchar(50) = '18181/POL/080025-515'
+Declare @RefNo varchar(50) = '17181/POL/000025-511'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -71,7 +71,7 @@ DECLARE @PartyRoleId varchar(100)
 		SELECT @PartyRoleId = Id
 		FROM PartyRole a
 		WHERE a.InsuranceApplication_Id = @InAppId 
-		and a.[Type_Id] =@TypeId --¼Ùé¶×Í¡ÃÁ¸ÃÃÁì or ¼ÙéàÍÒ»ÃÐ¡Ñ¹
+		and a.[Type_Id] =@TypeId --ï¿½ï¿½ï¿½ï¿½Í¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ or ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð¡Ñ¹
 
 
 
@@ -218,8 +218,8 @@ BEGIN TRY
 		left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyType = 1 and c.Party_Id is not null)
 		left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null)
 		left join PersonName e on (a.Party_Id = e.Person_Id and e.ThruDate is null)
-		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4') --àÅ¢¼ÙéàÊÕÂÀÒÉÕ
-		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --¨Ñ´Êè§ãºàÊÃç¨/ãº¡Ó¡ÑºÀÒÉÕ
+		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4') --ï¿½Å¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ãº¡Ó¡Ñºï¿½ï¿½ï¿½ï¿½
 		left join Citizenship h on (a.Party_Id = h.Person_Id)
 		left join PersonIdentification i on (i.Citizenship_Id = h.Id and i.[Type_Id] is not null)
 		inner join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and i.Id = j.DependencyContextItemId)
