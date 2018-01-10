@@ -59,7 +59,7 @@ DECLARE @UserName varchar(30) = 'vichayas'
 		if(@runningNumberPOL is null)
 			SET @runningNumberPOL = 1
 
-		select @refNo = dbo.GenReferenceNumber(@runningNumberPOL,1,0,@BranchCode,@Subclass,@yearAD)
+		select @refNo = dbo.GenReferenceNumber(@runningNumberPOL,1,0,@BranchCode,@Subclass,@yearAD,@PolicyCode)
 
 		if(@runningNumberPOL = 1)
 			BEGIN
