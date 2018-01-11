@@ -208,7 +208,7 @@ BEGIN TRY
 										CreatedDate, CreatedUserId, CreatedUserName)
 		select newId(), 1, @BranchCode, @BranchId,
 				@PaymentTarget_Id, a.Id as PartyRole_Id, a.[Type_Id],
-				a.Party_Id, e.Id as PersonName_Id,j.DependencyContextItemId as  PersonIdentification_Id, 
+				a.Party_Id, e.Id as PersonName_Id,i.Id as  PersonIdentification_Id, 
 				c.Id as PartyClassificationTH_Id, d.Id as PartyClassificationEN_Id,
 				b.Id as OrganizationName_Id, f.Id as CompanyRegistration_Id,
 				g.ContactMechanism_Id, '052CD53C-526D-4124-BE90-3E323D5BC194' ,
@@ -222,7 +222,7 @@ BEGIN TRY
 		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����	
 		left join Citizenship h on (a.Party_Id = h.Person_Id)
 		left join PersonIdentification i on (i.Citizenship_Id = h.Id and i.[Type_Id] is not null)
-		left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and j.DependencyContextItemId = i.Id)
+		inner join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (i.Id = j.DependencyContextItemId or f.Id = j.DependencyContextItemId))
 		where a.Id = @PartyRoleId --@PartyRole
 
 		IF @@ROWCOUNT = 0
