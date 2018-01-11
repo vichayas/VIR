@@ -359,3 +359,51 @@ select * from Party where Id = 'E11E642E-D6D8-4C60-9310-447D5ED33E24'
 select * from Party where Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 select * from CompanyRegistrationType where Id in ('F8E30A8A-00DE-4A77-AD47-10CF35F923F4','CA3BEEE9-ECB3-464C-9AA2-47A1B11DC4F6','4BA1E440-9EE7-461A-9400-DC25AE81177E')
 */
+
+SELECT b.*
+FROM Agreement a 
+INNER JOIN PartyRole b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+where a.ReferenceNumber = '' 
+
+
+
+SELECT b.*
+FROM Agreement a 
+INNER JOIN PartyRole b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+where a.ReferenceNumber = '' 
+
+--====== 
+
+SELECT b.*
+FROM PartyRole a 
+INNER JOIN InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
+WHERE a.Id = ''
+
+SELECT b.*
+FROM PartyRole a 
+INNER JOIN InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
+WHERE a.Id = ''
+--=======
+
+SELECT a.*
+FROM InsuranceApplicationRoleItem a
+INNER JOIN InsuranceApplicationItem b on (a.InsuranceApplicationItem_Id = b.Id)
+where a.InsuranceApplicationRole_Id in ('','')
+
+
+SELECT a.*
+FROM InsuranceApplicationRoleItem a
+INNER JOIN InsuranceApplicationItem b on (a.InsuranceApplicationItem_Id = b.Id)
+where a.InsuranceApplicationRole_Id in ('','')
+
+---===
+SELECT InsuranceApplicationRoleItem_Id,InsuranceApplicationItem_Id,*
+FROM PolicyItemPremium a
+INNER JOIN PremiumSchedule b on (a.PremiumSchedule_Id = b.Id)
+where InsuranceApplication_Id = ''
+
+
+SELECT InsuranceApplicationRoleItem_Id,InsuranceApplicationItem_Id,*
+FROM PolicyItemPremium a
+INNER JOIN PremiumSchedule b on (a.PremiumSchedule_Id = b.Id)
+where InsuranceApplication_Id = ''
