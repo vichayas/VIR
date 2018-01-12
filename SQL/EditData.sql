@@ -1,4 +1,4 @@
-﻿Declare @RefNo varchar(50) = '17502/APP/001002-511'
+﻿Declare @RefNo varchar(50) = '17502/APP/000998-511'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -82,37 +82,43 @@ inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
 inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
 inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
 inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
-where a.Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'  --Address  19 สำนักงานใหญ่
+where a.Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4' --Address  19 สำนักงานใหญ่
 and c.Address1 like 'เลขที่ 19%'
 order by c.CreatedDate DESC
 
 select * 
 --INTO #PartyRole
 from PartyRole 
-where InsuranceApplication_Id = 'C6F5442B-3358-4E23-937A-8E63AA9B276F' 
-and Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  19 สำนักงานใหญ่
+where InsuranceApplication_Id = 'B773D494-0BAB-4910-8352-D92F7F375F00'
+and Party_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4' --Address  19 สำนักงานใหญ่
+
 
 --============================== End Address  19 สำนักงานใหญ่
 
 select * 
 --INTO #PartyRole
 from PartyRole 
-where InsuranceApplication_Id = '871BC10B-E381-4A7F-B128-64F726A38F2C' 
-and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address   168  บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001
+where InsuranceApplication_Id = '84CA745E-BDEC-4AAD-8C1B-7E28065622AD' 
+and Party_Id = 'B297E7E4-BB49-4C3B-884F-33B33E5913D7' --Address   168  บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001
 
 
+--select * from Party where Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
+--select top 1* from Party where DescriptionTH like 'บริษัท อีซูซุพิษณุโลกฮกอันตึ๊ง จำกัด สาขาสี่แยกอินโดจีน สาขาที่ 00001%'
 
 select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, a.DescriptionTH
 --INTO #RoleContactMechanismMap
 from Party a
 inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
 inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
-inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
-inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
-where a.Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'  --Address  19 บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001
-and b.Id in ('EFC00040-3800-4979-B554-F9D198D7A2F8','9F7D4D28-9D7D-455A-9C5C-D77E9D34C8FF')
+left join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+left join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+where a.Id = 'B297E7E4-BB49-4C3B-884F-33B33E5913D7'  --Address  168 บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001
+and b.Id in ('60D42AA9-5A91-4988-BF0A-2E5DF84A435E')
 order by c.CreatedDate DESC
 
+--select * from OrganizationName where Organization_Id = 'FB575B38-7DB8-4C20-B577-E6599CE52F9C'
+--select * from OrganizationName where NameTH like '%อีซูซุพิษณุโลกฮกอันตึ๊%' and ThruDate is null
+--select * from Party where Id = 'B297E7E4-BB49-4C3B-884F-33B33E5913D7'
 
 --UPDATE #PartyRole
 --SET Party_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4', 
@@ -136,9 +142,10 @@ order by c.CreatedDate DESC
 select * 
 --INTO #PartyRole
 from PartyRole 
-where InsuranceApplication_Id = '30FEE2FF-0529-4178-B190-717C80AB232C' 
+where InsuranceApplication_Id = '853D4FE8-9843-471F-9A0F-759B847B51C5' 
 and Party_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414' --Address   206/4-8  สุโขทัยฮกอันตึ๊
 
+select * from OrganizationName where Organization_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414'
 --============================== End Address   206/4-8  สุโขทัยฮกอันตึ๊
 
 
@@ -159,14 +166,56 @@ from PartyRole
 where InsuranceApplication_Id = '871BC10B-E381-4A7F-B128-64F726A38F2C' 
 and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address   168  อีซูซุตากฮกอันตึ๊ง
 
-select * from Party where Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
+--select * from Party where DescriptionTH = 'บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด สาขาแม่สอด สาขาที่ 00001'
 
 --============================== End Address   168  อีซูซุตากฮกอันตึ๊ง
 select * 
 --INTO #PartyRole
 from PartyRole 
-where InsuranceApplication_Id = '6F779DDD-9221-4E5F-A976-881DFEB88875' 
-and Party_Id = 'E11E642E-D6D8-4C60-9310-447D5ED33E24' --Address  16/12
+where InsuranceApplication_Id = '1A3AC46D-C3D1-45AD-A1C9-FE1F7B842C48' 
+and Party_Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B' --Address  16/12
+--and DescriptionTH = 'บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด สาขาแม่สอด สาขาที่ 00001'
+
+select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
+--INTO #RoleContactMechanismMap
+from Party a
+inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
+inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
+inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+where a.Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B'  --  --Address  16/12
+order by c.CreatedDate DESC
+
+--============================== End Address  19 สำนักงานใหญ่
+select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
+I--NTO #RoleContactMechanismMap
+from Party a
+inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
+inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
+inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+where a.Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address  127 ตาก
+and c.Address1 like 'เลขที่ 127%'
+order by c.CreatedDate DESC
+
+--select * from Party where DescriptionTH like 'บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
+
+select * 
+--INTO #PartyRole
+from PartyRole 
+where InsuranceApplication_Id = 'FD6B2AFD-97D3-4F9F-AB5E-BBD7C13D7B01' 
+and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address  16/12
+--and DescriptionTH like '%บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
+
+--select * 
+----INTO #PartyRole
+--from PartyRole 
+--where InsuranceApplication_Id = 'B773D494-0BAB-4910-8352-D92F7F375F00'
+--and Party_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4' --Address    127 ตาก
+
+
+--============================== End Address  19 สำนักงานใหญ่
+--select * from Party where Id ='418A4E21-F28B-4F1B-BC3A-93A365976C4B'
 
 --select * 
 --INTO #PartyRole
@@ -181,6 +230,7 @@ Declare @InApppSource_Id uniqueidentifier
 Declare @RoleTarget_Id uniqueidentifier = newId()
 select @Role_Id=Id, @InApppSource_Id = InsuranceApplication_Id from #PartyRole 
 
+select * from Party where Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 
 
 --- Insert #PaymentRole
@@ -213,7 +263,7 @@ select *
 INTO #InsuranceApplicationRoleContactMechanism
 from InsuranceApplicationRoleContactMechanism where InsuranceApplicationRole_Id = @Role_Id
 
-select * from #InsuranceApplicationRoleContactMechanism
+
 
 
 --select * from ContactMechanism where Id in ('5A80E6A2-33E8-4CBC-B2B0-CEA118B7728B','B235D906-23EA-4F40-9E16-E58C25F8AED6') --127
@@ -276,8 +326,10 @@ left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyT
 left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null)
 left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4') --�Ţ�����������
 left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����
-inner join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (f.Id = j.DependencyContextItemId))
+left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (f.Id = j.DependencyContextItemId))
 where a.Id = @Role_Id 
+
+
 --delete #DependencyContextItem
 --INSERT INTO #DependencyContextItem
 --SELECT * FROM DependencyContextItem where Id = '4E7D50F1-D340-4FCA-A6C8-B2C9F881158E'
@@ -292,6 +344,8 @@ where a.Id = @Role_Id
 
 --from PersonName 
 --where Person_Id = '0275C86D-263C-4FA2-9E0C-A8A7D91423B5'
+
+--select * from PartyRole where InsuranceApplication_Id = '787D77EE-CE1D-40DA-A272-BA26812015E4'
 
 begin tran
 	INSERT INTO PartyRole
@@ -324,10 +378,75 @@ begin tran
 		PartyClassificationEN_Id = a.PartyClassificationEN_Id,
 		OrganizationName_Id = a.OrganizationName_Id,
 		CompanyRegistration_Id = a.CompanyRegistration_Id,
-		ContactMechanism_Id = a.ContactMechanism_Id
+		ContactMechanism_Id = a.ContactMechanism_Id,
+		PersonIdentification_Id = NULL,
+		PersonName_Id = NULL
 	From #PaymentRole a 
-	WHERE a.Id = PaymentRole.Id
+	WHERE PaymentRole.Id =a.Id --and PaymentRole.Id = '4199BD92-E30C-4278-B30B-07F2E90341E2'
 
+	
+	UPDATE PaymentRole
+	SET 
+		[Type_Id]    = a.[Type_Id],
+		Party_Id = a.Party_Id,
+		PartyClassificationTH_Id = c.Id,
+		PartyClassificationEN_Id = d.Id,
+		OrganizationName_Id = b.Id,
+		CompanyRegistration_Id = f.Id,
+		ContactMechanism_Id = g.ContactMechanism_Id,
+		PersonIdentification_Id = NULL,
+		PersonName_Id = NULL
+	From PartyRole a 
+left join OrganizationName b on (a.Party_Id = b.Organization_Id and b.ThruDate is NULL)
+left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyType = 1 and c.Party_Id is not null)
+left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null)
+left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4' and f.ThruDate is null) --�Ţ�����������
+left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����
+left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (f.Id = j.DependencyContextItemId))
+where a.Id =  '3FC013CC-30F2-4AF9-BCBA-AD54DDE8463C'
+and PaymentRole.PartyRole_Id = a.Id
+
+
+	DECLARE @InsuredRoleItem_Id uniqueidentifier
+	select @InsuredRoleItem_Id = Id from #InsuranceApplicationRoleItem
+
+	UPDATE PolicyItemPremium
+	SET InsuranceApplicationRoleItem_Id = @InsuredRoleItem_Id,
+		InsuranceApplicationItem_Id = @InsuranceApplicationItemTarget_Id
+	WHERE PremiumSchedule_Id = @PremiumSchedule_Id
+
+	DECLARE @InsuredRole_Id uniqueidentifier
+	select @InsuredRole_Id = Id
+	from PartyRole 
+	where InsuranceApplication_Id = @InsuranceApplication_Id 
+	and [Type_Id] = '1634B132-4285-4D54-87A9-6A3770A0AD2D'
+
+	select * 
+	from insuranceapplicationroleitem 
+	where InsuranceApplicationRole_Id = @InsuredRole_Id
+	
+	update insuranceapplicationroleitem
+	set ispayment = 0,
+	paymentmethodtype_id = null,
+	sequence = null
+	where InsuranceApplicationRole_Id = @InsuredRole_Id and PaymentMethodType_Id is not null
+
+
+	select * 
+	from insuranceapplicationroleitem 
+	where InsuranceApplicationRole_Id = @InsuredRole_Id
+
+	
+
+	UPDATE InsuranceApplicationRoleContactMechanism
+	SET ShowOnPolicy = 1
+	where InsuranceApplicationRole_Id = @InsuredRole_Id
+	and ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2'
+
+	select * 
+	from InsuranceApplicationRoleContactMechanism
+	where InsuranceApplicationRole_Id = @InsuredRole_Id
+	and ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2'
 
 rollback
 --commit
@@ -374,21 +493,21 @@ where a.ReferenceNumber = ''
 
 --====== 
 
-SELECT b.*
+SELECT  a.DescriptionTH,b.*
 FROM PartyRole a 
 INNER JOIN InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
-WHERE a.Id = ''
+WHERE a.InsuranceApplication_Id = '74FA73D3-A20D-4AAA-ABDF-F4AF46559B5E'
 
-SELECT b.*
+SELECT a.DescriptionTH,a.*,b.*
 FROM PartyRole a 
 INNER JOIN InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
-WHERE a.Id = ''
+WHERE a.InsuranceApplication_Id = '4FE16BA3-256B-4BBB-9E57-6E9F4EDE0D91'
 --=======
-
+select * from PartyRole where InsuranceApplication_Id = '787D77EE-CE1D-40DA-A272-BA26812015E4'
 SELECT a.*
 FROM InsuranceApplicationRoleItem a
 INNER JOIN InsuranceApplicationItem b on (a.InsuranceApplicationItem_Id = b.Id)
-where a.InsuranceApplicationRole_Id in ('','')
+where a.InsuranceApplicationRole_Id in ('B43275A8-C675-43C4-A0CF-CC8DBE1EFE77','E3DAA6BA-9613-41D7-8BF7-C6815E521F34')
 
 
 SELECT a.*
@@ -407,3 +526,9 @@ SELECT InsuranceApplicationRoleItem_Id,InsuranceApplicationItem_Id,*
 FROM PolicyItemPremium a
 INNER JOIN PremiumSchedule b on (a.PremiumSchedule_Id = b.Id)
 where InsuranceApplication_Id = ''
+
+SELECT InsuranceApplicationRoleItem_Id,InsuranceApplicationItem_Id,*
+FROM PolicyItemPremium a
+where a.PremiumSchedule_Id = '96B5F7A3-1278-4EFD-A727-D50424898DB5'
+
+select * from InsuranceApplicationRoleItem where InsuranceApplicationRole_Id = '55C332F8-E717-464E-B869-0437CE15A967'

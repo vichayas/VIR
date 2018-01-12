@@ -4,7 +4,7 @@ Create an Invoice
 
 
 
-Declare @RefNo varchar(50) = '17181/POL/000025-511'
+Declare @RefNo varchar(50) = '18304/POL/000005-511'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -226,7 +226,7 @@ BEGIN TRY
 		where a.Id = @PartyRoleId --@PartyRole
 
 
-		IF @@ROWCOUNT = 0
+		IF @@ROWCOUNT = 0 or @@ROWCOUNT > 1
 			ROLLBACK
 		--===== End
 		drop table #DocumentRunningRegistration
