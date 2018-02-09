@@ -49,12 +49,14 @@ where a.ReferenceNumber = @RefNo
 
 DECLARE @TypeId varchar(100)
 DECLARE @PartyRoleId varchar(100)
+		DECLARE @VatDate datetime = NULL
 
 
 		IF @Subclass = '511' or  @Subclass = '515' 
 		   BEGIN
 			   SET @Disciminator = 'InsuranceTaxInvoice'
 			   SET @TypeId = '1634B132-4285-4D54-87A9-6A3770A0AD2D'
+				SET @VatDate = GETDATE()
 		   END
 		 ELSE IF @Subclass = '533' or  @Subclass = '569' 
 		   BEGIN
@@ -84,14 +86,16 @@ BEGIN TRY
 							TotalDuty,  TotalTax, ExchangeTotalBeforeFee,
 							ExchangeTotalAfterFee, ExchangeTotalDuty, ExchangeTotalTax,
 							IssuedDate, Discriminator, CreatedDate,
-							CreatedUserId, CreatedUserName)
+							CreatedUserId, CreatedUserName, 
+							VATDate)
 		SELECT @PaymentTarget_Id,  0, 
 			   BranchCode, BranchId, NULL,
 			   1,PremiumAmount,TotalAmount,
 			   StampsDutyAmount,VatAmount,0,
 			   0,0,0,
 			   GETDATE(),@Disciminator,GETDATE(),
-			   'AddPayment', @UserName
+			   'AddPayment', @UserName,
+			   @VatDate
 		FROM PremiumSchedule
 		WHERE InsuranceApplication_Id = @InAppId 
 
