@@ -4,7 +4,7 @@ Create an Invoice
 
 
 
-Declare @RefNo varchar(50) = '18100/POL/000099-533'
+Declare @RefNo varchar(50) = '18102/POL/000024-511'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
