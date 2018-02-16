@@ -4,7 +4,7 @@ Create an Invoice
 
 
 
-Declare @RefNo varchar(50) = '18102/POL/000024-511'
+Declare @RefNo varchar(50) = '18181/POL/260317-515'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -20,13 +20,16 @@ print @Subclass
 
 select a.Id as AgreementId,a.InsuranceApplication_Id, b.Id as PremiumScheduleId, c.Id as PaymentApplication, 
 d.ReferenceNumber, d.Id as PaymentId, d.Discriminator,
-f.Id as PaymentRole_Id, e.Id as PolicyItemPremiumId
+f.Id as PaymentRole_Id, e.Id as PolicyItemPremiumId,
+k.Id as PolicyItemPremium_Id
 from Agreement a
 left join PremiumSchedule b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+left join PolicyItemPremium k on (b.Id = k.PremiumSchedule_Id)
 left join PaymentApplication c on (b.Id = c.PremiumSchedule_Id)
 left join Payment d on (c.Payment_Id = d.Id)
 left join PaymentRole f on (f.Payment_Id = d.Id)
 left join PolicyItemPremium e on (b.Id = e.PremiumSchedule_Id)
+left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (f.PersonIdentification_Id = j.DependencyContextItemId or f.CompanyRegistration_Id = j.DependencyContextItemId))
 where a.ReferenceNumber = @RefNo and a.Discriminator = 'InsurancePolicy'
 
 DECLARE @PaymentTarget_Id uniqueidentifier = newId()
@@ -209,7 +212,7 @@ BEGIN TRY
 								OrganizationName_Id, CompanyRegistration_Id,
 								ContactMechanism_Id,PaymentRoleType_Id,
 										CreatedDate, CreatedUserId, CreatedUserName)
-		select newId(), 1, @BranchCode, @BranchId,
+		select  newId(), 1, @BranchCode, @BranchId,
 				@PaymentTarget_Id, a.Id as PartyRole_Id, a.[Type_Id],
 				a.Party_Id, e.Id as PersonName_Id,i.Id as  PersonIdentification_Id, 
 				c.Id as PartyClassificationTH_Id, d.Id as PartyClassificationEN_Id,
@@ -218,18 +221,18 @@ BEGIN TRY
 				GETDATE(),'ByPassToPolicy',@UserName
 		From PartyRole a 
 		left join OrganizationName b on (a.Party_Id = b.Organization_Id and b.ThruDate is NULL)
-		left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyType = 1 and c.Party_Id is not null)
-		left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null)
+		left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyType = 1 and c.Party_Id is not null and c.ThruDate is null)
+		left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null and d.ThruDate is null)
 		left join PersonName e on (a.Party_Id = e.Person_Id and e.ThruDate is null)
-		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4') --�Ţ�����������
-		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����
+		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id  and e.ThruDate is null) --เลขผู้เสียภาษี
+		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --จัดส่งใบเสร็จ/ใบกำกับภาษี
 		left join Citizenship h on (a.Party_Id = h.Person_Id)
 		left join PersonIdentification i on (i.Citizenship_Id = h.Id and i.[Type_Id] is not null)
 		inner join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (i.Id = j.DependencyContextItemId or f.Id = j.DependencyContextItemId))
 		where a.Id = @PartyRoleId --@PartyRole
+		order by e.ModifiedDate, b.ModifiedDate DESC
 
-
-		IF @@ROWCOUNT = 0 or @@ROWCOUNT > 1
+		IF @@ROWCOUNT != 1
 			ROLLBACK
 		--===== End
 		drop table #DocumentRunningRegistration

@@ -2,7 +2,11 @@ select fc.*
 from FormConfiguration fc
 inner join FormAvailability fa on fa.FormConfiguration_Id=fc.Id
 inner join ProductCategory p on p.Id=fa.InsuranceProductCategory_Id
-where p.Code='511'
+where p.Code='520'
 order by DescriptionTH
 
-\Report511\Policy511_V3.rdlc
+select p.Code
+from FormConfiguration fc
+inner join FormAvailability fa on fa.FormConfiguration_Id=fc.Id
+inner join ProductCategory p on p.Id=fa.InsuranceProductCategory_Id
+where ReportPathTH like '%Policy511_V3%'
