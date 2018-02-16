@@ -202,7 +202,8 @@ BEGIN TRY
 		--======= End 
 
 		--======= Insert PaymentRole
-		print '4. Insert PaymentRole'
+		
+		print CONCAT('4. Insert PaymentRole PartyRole= ',@PartyRoleId)
 		INSERT INTO PaymentRole (Id, SequenceNo, BranchCode, BranchId,
 								Payment_Id, PartyRole_Id, [Type_Id],
 								Party_Id, PersonName_Id, PersonIdentification_Id,
