@@ -3,7 +3,7 @@ Create an Invoice
 */
 
 
-Declare @RefNo varchar(50) = '18181/END/000084-520'
+Declare @RefNo varchar(50) = '18502/END/000164-511'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -27,6 +27,7 @@ left join Payment d on (c.Payment_Id = d.Id)
 left join PaymentRole f on (f.Payment_Id = d.Id)
 left join PolicyItemPremium e on (b.Id = e.PremiumSchedule_Id)
 where a.ReferenceNumber = @RefNo
+
 
 DECLARE @PaymentTarget_Id uniqueidentifier = newId()
 DECLARE @InAppId uniqueidentifier
@@ -223,11 +224,11 @@ BEGIN TRY
 		left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyType = 1 and c.Party_Id is not null and c.ThruDate is null)
 		left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null and d.ThruDate is null)
 		left join PersonName e on (a.Party_Id = e.Person_Id and e.ThruDate is null)
-		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id  and e.ThruDate is null) --เลขผู้เสียภาษี
+		left join CompanyRegistration f on (a.Party_Id = f.Organization_Id  and e.ThruDate is null and e.Type_Id = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4') --เลขผู้เสียภาษี
 		left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --จัดส่งใบเสร็จ/ใบกำกับภาษี
 		left join Citizenship h on (a.Party_Id = h.Person_Id)
 		left join PersonIdentification i on (i.Citizenship_Id = h.Id and i.[Type_Id] is not null)
-		inner join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (i.Id = j.DependencyContextItemId or f.Id = j.DependencyContextItemId))
+		left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (i.Id = j.DependencyContextItemId or f.Id = j.DependencyContextItemId))
 		where a.Id = @PartyRoleId --@PartyRole
 		order by e.ModifiedDate, b.ModifiedDate DESC
 

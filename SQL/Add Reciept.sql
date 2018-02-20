@@ -4,7 +4,7 @@ Create an Invoice
 
 
 
-Declare @RefNo varchar(50) = '18181/POL/260317-515'
+Declare @RefNo varchar(50) = '18302/POL/000083-511'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -204,7 +204,7 @@ BEGIN TRY
 		--======= End 
 
 		--======= Insert PaymentRole
-		print '4. Insert PaymentRole'
+		print CONCAT('4. Insert PaymentRole = ',@PartyRoleId)
 		INSERT INTO PaymentRole (Id, SequenceNo, BranchCode, BranchId,
 								Payment_Id, PartyRole_Id, [Type_Id],
 								Party_Id, PersonName_Id, PersonIdentification_Id,

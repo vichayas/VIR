@@ -4,7 +4,7 @@ INNER JOIN InsuranceApplication IA2 ON IA2.Id = IA1.ParentId
 INNER JOIN InsuranceApplicationItem iai on iai.InsuranceApplication_Id=IA1.Id
 INNER JOIN Agreement a on (a.InsuranceApplication_Id = IA1.Id)
 LEFT JOIN InsuranceApplicationItem iai2 on (iai2.InsuranceApplication_Id=IA1.Id)
-WHERE IA1.PolicyNumber = '18181/POL/000005-520'
+WHERE IA1.PolicyNumber = '17181/POL/000160-520'
 AND a.Discriminator = 'InsuranceEndorsement'
 AND iai.InsuranceApplicationItemType_Id like 'F8%'
 AND iai2.InsuranceApplicationItemType_Id like '213F8708-FCC2-4430-A804-A1D115F718C5'

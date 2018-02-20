@@ -7,7 +7,7 @@ select a.ReferenceNumber,a2.ReferenceNumber, ia.PolicyNumber, ia.END_Sequence, c
  inner join InsuranceApplication ia on (ia.Id = a.InsuranceApplication_Id)
  inner join ApplicantEndorsementItem api on (a.Id = api.ApplicantEndorsement_Id and b.EndorsementType_Id = api.EndorsementType_Id)
 inner join InsuranceApplicationItem iai on (api.InsuranceApplication_Id =iai.InsuranceApplication_Id)
-  where a2.ReferenceNumber = '18181/END/000025-574' and iai.InsuranceApplicationItemType_Id='213F8708-FCC2-4430-A804-A1D115F718C5' 
+  where a2.ReferenceNumber = '18181/END/000027-574'  and iai.InsuranceApplicationItemType_Id='213F8708-FCC2-4430-A804-A1D115F718C5' 
   order by c2.DescriptionTH, iai.TotalAfterFee
 
 select InsuranceApplicationItem.*

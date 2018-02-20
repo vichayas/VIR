@@ -1,4 +1,4 @@
-Declare @RefNo varchar(50) = '18181/APE/000082-520'
+Declare @RefNo varchar(50) = '18181/APE/000090-520'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -22,11 +22,12 @@ select * from Agreement where InsuranceApplication_Id = @InApp_Id
 
 select * from AgentCommission where Agreement_Id = @Agree_Id
 
-
+print @InsuranceProductCategory_Id
+--select * from DocumentRunningConfigurationAvailability where InsuranceProductCategory_Id = 'A97B7C3B-09AF-4544-AF36-2E642A26772B'
 	select @DocAvailabilityId = Id
 		from DocumentRunningConfigurationAvailability 
 		WHERE InsuranceProductCategory_Id = @InsuranceProductCategory_Id
-		and DocumentRunningConfiguration_Id = '35FE7921-FCFA-4FCF-A73C-DE7A4730CDA6'
+		and DocumentRunningConfiguration_Id = '29780376-E365-411D-A24F-E4A03EB00833'
 
 select top 2 * from DocumentRunningRegistration 
 where YearAD = @yearAD
@@ -38,7 +39,7 @@ order by RunningNumber desc
 
 
 DECLARE @AgreePolId uniqueidentifier 
-select @AgreePolId=Id from Agreement where InsuranceApplication_Id = @InApp_Id and Discriminator = 'InsurancePolicy'
+select @AgreePolId=Id from Agreement where InsuranceApplication_Id = @InApp_Id and Discriminator = 'InsuranceEndorsement'
 
 
 DECLARE @UserName varchar(30) = 'vichayas'
@@ -59,7 +60,7 @@ DECLARE @UserName varchar(30) = 'vichayas'
 		if(@runningNumberPOL is null)
 			SET @runningNumberPOL = 1
 
-		select @refNo = dbo.GenReferenceNumber(@runningNumberPOL,1,0,@BranchCode,@Subclass,@yearAD,@PolicyCode)
+		select @refNo = dbo.GenReferenceNumber(@runningNumberPOL,1,1,@BranchCode,@Subclass,@yearAD,@PolicyCode)
 
 		if(@runningNumberPOL = 1)
 			BEGIN
