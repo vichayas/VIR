@@ -1,4 +1,5 @@
 select a.ReferenceNumber,a2.ReferenceNumber, ia.PolicyNumber, ia.END_Sequence, c1.DescriptionTH, c2.DescriptionTH, iai.TotalBeforeFee, iai.TotalAfterFee, iai.TotalDuty, b.EndorsementType_Id
+,b.InsuranceApplication_Id
  from Agreement a
  inner join  Agreement a2 on (a.InsuranceApplication_Id = a2.InsuranceApplication_Id and a2.Discriminator = 'InsuranceEndorsement')
  inner join ApplicantEndorsementItem b on (a.Id = b.ApplicantEndorsement_Id)
