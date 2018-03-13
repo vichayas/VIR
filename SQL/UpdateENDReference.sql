@@ -1,4 +1,4 @@
-Declare @RefNo varchar(50) = '18181/APE/000090-520'
+Declare @RefNo varchar(50) = '18181/APE/000030-563'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)

@@ -1,4 +1,4 @@
-﻿Declare @RefNo varchar(50) = '18502/APP/000363-511' ---17502/APP/000109-511,18502/APP/000178-511
+﻿Declare @RefNo varchar(50) = '18502/APP/000458-511' ---17502/APP/000109-511,18502/APP/000178-511
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -91,23 +91,6 @@ DECLARE @PartyId varchar(100)-- = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 --where  Party_Id = 'A66B6287-0F0F-4A5E-9A3A-ECE4656D63DB'
 --and InsuranceApplication_Id = '960D9FEB-D7F5-41F6-A2CD-E7502957385A' --  180 สำนักงานใหญ่ 
 
-----select c.Address1 , a.InsuranceApplication_Id
-----from PartyRole a
-----inner join InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
-----inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
-----where a.Party_Id = 'A66B6287-0F0F-4A5E-9A3A-ECE4656D63DB'
-----and c.Address1 like 'เลขที่ 180%'
-----UPDATE PartyRole 
-----SET DescriptionTH = 'บริษัท อีซูซุอุตรดิตถ์ฮกอันตึ๊ง จำกัด สำนักงานใหญ่',
-----	DescriptionEN = 'บริษัท (EN) อีซูซุอุตรดิตถ์ฮกอันตึ๊ง จำกัด สำนักงานใหญ่'
-----where  Party_Id = 'A66B6287-0F0F-4A5E-9A3A-ECE4656D63DB'
-
-----select * from Party where Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
-----select * from Party where DescriptionTH like 'บริษัท อีซูซุพิษณุโลกฮกอันตึ๊ง%'
-----select * from Party where DescriptionTH like 'บริษัท อีซูซุอุตรดิตถ์ฮกอันตึ๊ง%'
-
-----select * from PartyRole where Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
-
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
 --INTO #RoleContactMechanismMap
 --from Party a
@@ -119,84 +102,20 @@ DECLARE @PartyId varchar(100)-- = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 --and c.Address1 like 'เลขที่ 180%'
 --order by c.CreatedDate DESC
 
---select * from ContactMechanism where Id = '4492C38A-595F-475D-8441-DFECBE613DB4'
---UpDATE PartyRole
---SET Party_Id = 'A66B6287-0F0F-4A5E-9A3A-ECE4656D63DB'
---WHERE Id = '14C1B7DA-F128-4E3D-AE85-8366EEDDBC16'
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = '9686EAF0-1570-4BE0-BF0D-28BCC559CF7B'
 
---select * from PartyRole where InsuranceApplication_Id = '0B894DB2-8F3E-4159-A013-502FF31474B0'
---select * from PaymentRole where PartyRole_Id = '14C1B7DA-F128-4E3D-AE85-8366EEDDBC16'
+--select * from Party where Id = 'A66B6287-0F0F-4A5E-9A3A-ECE4656D63DB'
+--select * from CompanyRegistration where Organization_Id = 'A66B6287-0F0F-4A5E-9A3A-ECE4656D63DB' and ThruDate is null
 
---	UPDATE PaymentRole
---	SET 
---		[Type_Id]    = a.[Type_Id],
---		Party_Id = a.Party_Id,
---		PartyClassificationTH_Id = c.Id,
---		PartyClassificationEN_Id = d.Id,
---		OrganizationName_Id = b.Id,
---		CompanyRegistration_Id = f.Id,
---		ContactMechanism_Id = g.ContactMechanism_Id,
---		PersonIdentification_Id = NULL,
---		PersonName_Id = NULL
---	From PartyRole a 
---left join OrganizationName b on (a.Party_Id = b.Organization_Id and b.ThruDate is NULL)
---left join PartyClassification c on (a.Party_Id = c.Party_Id and c.SequencePartyType = 1 and c.Party_Id is not null)
---left join PartyClassification d on (a.Party_Id = d.Party_Id and d.SequencePartyType = 2 and d.Party_Id is not null)
---left join CompanyRegistration f on (a.Party_Id = f.Organization_Id and f.[Type_Id] = 'F8E30A8A-00DE-4A77-AD47-10CF35F923F4' and f.ThruDate is null) --�Ţ�����������
---left join InsuranceApplicationRoleContactMechanism g on (a.Id = g.InsuranceApplicationRole_Id  and g.ShowOnPolicy = 1 and (g.ContactMechanismPurposeType_Id = '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB' or g.ContactMechanismPurposeType_Id = 'E3A26D7E-94C2-439F-9B8A-A644078304B2')) --�Ѵ�������/㺡ӡѺ����
---left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (f.Id = j.DependencyContextItemId))
---where a.Id =  '14C1B7DA-F128-4E3D-AE85-8366EEDDBC16'
---and PaymentRole.PartyRole_Id = a.Id
 
---============================== End Address    180 อุตรดิต สำนักงานใหญ่
+--============================== End Address    180 อุตรดิต สำนักงานใหญ่ 0535538000015
 
---select * 
-----INTO #PartyRole
---from PartyRole 
---where InsuranceApplication_Id = '9B4FD316-F481-415D-911B-DAAE4EDCDA05' 
---and Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --  180 สำนักงานใหญ่ 
-
-----select * from Party where Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
-----select * from Party where DescriptionTH like 'บริษัท อีซูซุพิษณุโลกฮกอันตึ๊ง%'
-----select * from Party where DescriptionTH like 'บริษัท อีซูซุอุตรดิตถ์ฮกอันตึ๊ง%'
-
-----select * from PartyRole where Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
 ----INTO #RoleContactMechanismMap
---from Party a
---inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
---inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
---where a.Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'  --  180 สำนักงานใหญ่
---and c.Address1 like 'เลขที่ 180%'
---order by c.CreatedDate DESC
-
---============================== End Address    180 พิษณุโลก สำนักงานใหญ่
-
-select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
-INTO #RoleContactMechanismMap
-from Party a
-inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
-inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
-inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
-inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
-where a.Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'  --Address  127 สำนักงานใหญ่
-and c.Address1 like 'เลขที่ 127%'
-order by c.CreatedDate DESC
-
-select *
-INTO #PartyRole
-from PartyRole a
-where InsuranceApplication_Id = '25FE5515-E248-43EC-93A3-436EDBD4E7D6' 
-and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
-
-
---============================== End Address  127 สำนักงานใหญ่
-
---select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
---INTO #RoleContactMechanismMap
 --from Party a
 --inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
 --inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
@@ -207,28 +126,31 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --order by c.CreatedDate DESC
 
 --select * 
---INTO #PartyRole
+----INTO #PartyRole
 --from PartyRole 
 --where InsuranceApplication_Id = '252BC3A8-94A5-4454-9A80-0C8586029406'
 --and Party_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4' --Address  19 สำนักงานใหญ่
 
---============================== End Address  19 สำนักงานใหญ่
+
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = 'B272022D-A897-4F11-A9AC-2C6437648E75'
+
+--select * from Party where Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4'
+--select * from CompanyRegistration where Organization_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4' and ThruDate is null
+
+--============================== End Address  19 บริษัท อีซูซุพิษณุโลกฮกอันตึ๊ง จำกัด สำนักงานใหญ่ 0655536000092
 
 --select * 
---INTO #PartyRole
+----INTO #PartyRole
 --from PartyRole 
 --where InsuranceApplication_Id = 'B8FAD54E-6D72-4E49-9CD2-41722BE64825' 
 --and Party_Id = 'B297E7E4-BB49-4C3B-884F-33B33E5913D7' --Address   168  บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001
 
 
-
-
-------select * from Party where Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
-------select * from Party where DescriptionTH like 'บริษัท สุโขทัย ฮอนด้าคาร์ส์ จำกัด%'
-------select * from PartyRole where Party_Id = 'BCD52734-932C-4B75-87A0-F70FFAA1EC17'
-
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, a.DescriptionTH, c.Address1
---INTO #RoleContactMechanismMap
+----INTO #RoleContactMechanismMap
 --from Party a
 --inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
 --inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
@@ -238,46 +160,16 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --and b.Id in ('60D42AA9-5A91-4988-BF0A-2E5DF84A435E')
 --order by c.CreatedDate DESC
 
---select * from OrganizationName where Organization_Id = 'FB575B38-7DB8-4C20-B577-E6599CE52F9C'
---select * from OrganizationName where NameTH like '%อีซูซุพิษณุโลกฮกอันตึ๊%' and ThruDate is null
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = '4050A720-C209-469B-887E-54F33F715129'
+
 --select * from Party where Id = 'B297E7E4-BB49-4C3B-884F-33B33E5913D7'
-
---UPDATE #PartyRole
---SET Party_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4', 
---	DescriptionTH = a.DescriptionTH
---FROM #RoleContactMechanismMap a
+--select * from CompanyRegistration where Organization_Id = 'B297E7E4-BB49-4C3B-884F-33B33E5913D7' and ThruDate is null
 
 
---============================== End Address  168 บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001
-
-
---select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
---INTO #RoleContactMechanismMap
---from Party a
---inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
---inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
---where a.Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414'  --Address  206/4-8 สุโขทัยฮกอันตึ๊
---order by c.CreatedDate DESC
-
---select * 
---INTO #PartyRole
---from PartyRole 
---where InsuranceApplication_Id = 'F92BFA25-301C-41B9-A986-D1D3E5166610' 
---and Party_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414' --Address   206/4-8  สุโขทัยฮกอันตึ๊
-
---select c.Address1 , a.InsuranceApplication_Id
---from PartyRole a
---inner join InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---where a.Party_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414' 
---and c.Address1 like 'เลขที่ 206/4-8%'
-
-
---select * from OrganizationName where Organization_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414'
---============================== End Address   206/4-8  สุโขทัยฮกอันตึ๊
-
+--============================== End Address  168 บริษัท (EN) อีซูซุพิษณุโลกฮกอันตึ๊ง  สาขาที่ 00001 0655536000092
 
 
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
@@ -287,7 +179,36 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
 --inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
 --inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+--where a.Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414'  --Address  206/4-8 สุโขทัยฮกอันตึ๊
+--order by c.CreatedDate DESC
+
+--select * 
+----INTO #PartyRole
+--from PartyRole 
+--where InsuranceApplication_Id = 'F92BFA25-301C-41B9-A986-D1D3E5166610' 
+--and Party_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414' --Address   206/4-8  สุโขทัยฮกอันตึ๊
+
+
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = '406125E6-0A14-409D-99D4-017E2BAAFF1D'
+
+--select * from Party where Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414'
+--select * from CompanyRegistration where Organization_Id = 'E8B4AC8D-58C0-4206-8A7F-45B3DED7C414' and ThruDate is null
+
+
+--============================== End Address   206/4-8  บริษัท สุโขทัยฮกอันตึ๊ง (1978) จำกัด สำนักงานใหญ่ 0645521000024
+
+--select c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
+----INTO #RoleContactMechanismMap
+--from Party a
+--inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
+--inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
+--inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+--inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
 --where a.Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'  --Address  168 อีซูซุตากฮกอันตึ๊ง
+--and Address1 like '%168%'
 --order by c.CreatedDate DESC
 
 --select * 
@@ -297,17 +218,25 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address   168  อีซูซุตากฮกอันตึ๊ง
 
 
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = 'CBFA0EE6-CEC0-446F-A52A-8732485D5D2B'
 
---============================== End Address   168  อีซูซุตากฮกอันตึ๊ง
+--select * from Party where Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
+--select * from CompanyRegistration where Organization_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' and ThruDate is null
+
+
+--============================== End Address   168  บริษัท (EN) อีซูซุตากฮกอันตึ๊ง จำกัด สำนักงานใหญ่ 0635542000155
 --select * 
---INTO #PartyRole
+----INTO #PartyRole
 --from PartyRole 
 --where InsuranceApplication_Id = '7FC5C6AE-4D12-4B6F-BB33-BE13253C45DB' 
 --and Party_Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B' --Address  16/12
 ------and DescriptionTH = 'บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด สาขาแม่สอด สาขาที่ 00001'
 
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
---INTO #RoleContactMechanismMap
+----INTO #RoleContactMechanismMap
 --from Party a
 --inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
 --inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
@@ -316,19 +245,19 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --where a.Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B'  --  --Address  16/12
 --order by c.CreatedDate DESC
 
---select * from PartyRole where DescriptionTH like 'บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%(สาขาแม่สอด)%'
+
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = 'D6669CD3-F233-4BF7-A15D-3271C7BBDE93'
+
 --select * from Party where Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B'
---select * from OrganizationName where Organization_Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B'
-
---select c.Address1 , a.InsuranceApplication_Id
---from PartyRole a
---inner join InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---where a.Party_Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B'
---and c.Address1 like 'เลขที่ 16/12%'
+--select * from CompanyRegistration where Organization_Id = '418A4E21-F28B-4F1B-BC3A-93A365976C4B' and ThruDate is null
 
 
---============================== End Address  19 สำนักงานใหญ่
+--============================== End Address   16/12 บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด สาขาแม่สอด สาขาที่ 00001 0635542000155
+
+
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
 --INTO #RoleContactMechanismMap
 --from Party a
@@ -340,29 +269,24 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --and c.Address1 like 'เลขที่ 127%'
 --order by c.CreatedDate DESC
 
-------select * from Party where DescriptionTH like 'บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
 
 --select * 
-----INTO #PartyRole
+--INTO #PartyRole
 --from PartyRole 
 --where InsuranceApplication_Id = 'FD6B2AFD-97D3-4F9F-AB5E-BBD7C13D7B01' 
 --and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address 127 
-----and DescriptionTH like '%บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
+--and DescriptionTH like '%บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
 
---select c.Address1 , a.InsuranceApplication_Id
---from PartyRole a
---inner join InsuranceApplicationRoleContactMechanism b on (a.Id = b.InsuranceApplicationRole_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---where a.Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
---and c.Address1 like 'เลขที่ 127%'
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = '26B70C25-C377-4050-A761-03FE0228F0E1'
 
---select * 
-----INTO #PartyRole
---from PartyRole 
---where InsuranceApplication_Id = 'B773D494-0BAB-4910-8352-D92F7F375F00'
---and Party_Id = 'E5802500-983B-4ECC-9DCF-ACF2159DBAD4' --Address    127 ตาก
+--select * from Party where Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
+--select * from CompanyRegistration where Organization_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' and ThruDate is null
 
---============================== End Address  76/11 สำนักงานใหญ่
+
+--============================== End Address  127 บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด สำนักงานใหญ่ 0635542000155
 
 --select * 
 ----INTO #PartyRole
@@ -370,10 +294,6 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --where InsuranceApplication_Id = '3BE134C5-FCF5-4601-B1C9-8CABC63BC18D' 
 --and Party_Id = 'BCD52734-932C-4B75-87A0-F70FFAA1EC17' --Address   76/11  บริษัท สุโขทัย ฮอนด้าคาร์ส์ จำกัด
 
-
-------select * from Party where Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A'
-------select * from Party where DescriptionTH like '%โตโยต้าสุโขทัย%'
-------select * from PartyRole where Party_Id = '3DCB1D20-0D50-4DC3-AC56-963BFB3AD21B'
 
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, a.DescriptionTH, c.Address1
 ----INTO #RoleContactMechanismMap
@@ -386,64 +306,24 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --and b.Id in ('DFB33E9D-DA6D-4024-A0BF-E1AB15CE246E')
 --order by c.CreatedDate DESC
 
-----============================== End Address   76/11  บริษัท สุโขทัย ฮอนด้าคาร์ส์ จำกัด
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = 'E507B1A2-70AC-4E09-82E2-075B88D00070'
+
+--select * from Party where Id = 'BCD52734-932C-4B75-87A0-F70FFAA1EC17'
+--select * from CompanyRegistration where Organization_Id = 'BCD52734-932C-4B75-87A0-F70FFAA1EC17' and ThruDate is null
+
+----============================== End Address   76/11  บริษัท สุโขทัย ฮอนด้าคาร์ส์ จำกัด 0645538000081
+
 
 
 --select * 
---INTO #PartyRole
+----INTO #PartyRole
 --from PartyRole 
 --where Party_Id = 'CA6185FE-B1EB-4E38-B842-60D966BB4241'
---and InsuranceApplication_Id = '7CD096A1-182F-48C9-9493-E74B3DEF7C0A'  --Address   105/1 บริษัท โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า จำกัด
+--and InsuranceApplication_Id = '0A44A64D-47D3-409F-B8E6-EE9AED11624D'  --Address   105/1 บริษัท โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า จำกัด
 
-----select * from Party where DescriptionTH like '%โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า%'
-----select * from CompanyRegistration where Organization_Id =  'CA6185FE-B1EB-4E38-B842-60D966BB4241'
-----select * from OrganizationName where Organization_Id =  'CA6185FE-B1EB-4E38-B842-60D966BB4241'
-----select * from PartyClassification where Party_Id =  'CA6185FE-B1EB-4E38-B842-60D966BB4241'
-
-----select * from PaymentRole where PartyRole_Id = '059D53E6-C734-40C0-BC6B-46E6E092689B'
-
-----select * 
-----INTO #PartyRole
-----from PartyRole 
-----where InsuranceApplication_Id = '3BE134C5-FCF5-4601-B1C9-8CABC63BC18D' 
-----and Party_Id = 'BCD52734-932C-4B75-87A0-F70FFAA1EC17' --Address   76/11  บริษัท สุโขทัย ฮอนด้าคาร์ส์ จำกัด
-
-----UPDATE #PartyRole
-----SET InsuranceApplication_Id = @InsuranceApplication_Id,
-----    Party_Id = 'CA6185FE-B1EB-4E38-B842-60D966BB4241',
-----	DescriptionTH = 'บริษัท โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า จำกัด สำนักงานใหญ่',
-----	DescriptionEN = 'บริษัท โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า จำกัด สำนักงานใหญ่'
-
-
-----select * from CompanyRegistration where Organization_Id = '3DCB1D20-0D50-4DC3-AC56-963BFB3AD21B'
---select b.DescriptionTH
---from InsuranceApplicationRoleContactMechanism a
---inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
---where a.InsuranceApplicationRole_Id = '059D53E6-C734-40C0-BC6B-46E6E092689B'
-
---select top 1 p.*
-----INTO #PartyRole
---from PartyRole p
---inner join InsuranceApplicationRoleContactMechanism a on (p.Id = a.InsuranceApplicationRole_Id)
---inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
---where p.Party_Id = 'CA6185FE-B1EB-4E38-B842-60D966BB4241'
---and InsuranceApplication_Id = '02654054-31A2-471F-9558-B3959049137F'
-
---UPDATE PaymentRole 
---SET ContactMechanism_Id = 'C94B20A9-7EBD-4B1D-8506-1C97E78DDA49'
---where Id = 'C810F940-B596-41A2-B431-762A9971B855'
-
---and InsuranceApplication_Id = '7CD096A1-182F-48C9-9493-E74B3DEF7C0A'  --Address   105/1 บริษัท โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า จำกัด
-
---UPDATE InsuranceApplicationRoleContactMechanism 
---SET ContactMechanism_Id = 'C94B20A9-7EBD-4B1D-8506-1C97E78DDA49' --reciept
---WHERE Id = '3956CDE9-0858-4FF2-9F8D-8B63D43E2579'
-
---UPDATE InsuranceApplicationRoleContactMechanism 
---SET ContactMechanism_Id = '1542DDC9-77FC-4453-869E-6410CB1FAEA2'
---WHERE Id = '56CDE08F-3B50-49C9-8A95-51F597CF5A71'
-
---select * from ContactMechanismPurposeType where Id= '636B3BA8-9158-4AEE-A669-5B2F2D7DC5BB'
 
 --select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, a.DescriptionTH, c.Address1
 ----INTO #RoleContactMechanismMap
@@ -456,40 +336,43 @@ and a.Party_Id = '955B59C8-0236-4007-B13C-7A37AD2E5EAE' --Address  127
 --and b.Id in ('44ECD39E-EAF9-4606-AAB9-06C4798930EE','78165550-A289-48D9-92B7-0D5B0C6887F2' )
 --order by c.CreatedDate DESC
 
---select * from Party where DescriptionTH like '%โตโยต้าสุโขทัย%'
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = 'A7A5F6B5-E293-4178-AAC8-F49AE8C5B2D1'
 
---============================== End Address  19 สำนักงานใหญ่
+--select * from Party where Id = 'CA6185FE-B1EB-4E38-B842-60D966BB4241'
+--select * from CompanyRegistration where Organization_Id = 'CA6185FE-B1EB-4E38-B842-60D966BB4241' and ThruDate is null
 
---select * from Party where Id ='418A4E21-F28B-4F1B-BC3A-93A365976C4B'
+--============================== End Address  105/1 บริษัท โตโยต้าสุโขทัย ผู้จำหน่ายโตโยต้า จำกัด 0645516000038
 
---select * 
---INTO #PartyRole
---from PartyRole 
---where InsuranceApplication_Id = 'EDE39B86-A953-48A7-94D9-E7C9254A6739' 
---and Party_Id = 'E11E642E-D6D8-4C60-9310-447D5ED33E24'  --Address 180, 16/12
-
---select * from #PartyRole
 
 --==============================
---select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
-----INTO #RoleContactMechanismMap
---from Party a
---inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
---inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
---where a.Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996'  --Address  89 บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
---order by c.CreatedDate DESC
+select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
+INTO #RoleContactMechanismMap
+from Party a
+inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
+inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
+inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+where a.Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996'  --Address  89 บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
+order by c.CreatedDate DESC
 
---select * 
-----INTO #PartyRole
---from PartyRole 
---where InsuranceApplication_Id = '805C3BE5-FE4B-4042-B05A-00E1E4F2E46E' 
---and Party_Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996' --Address   89  บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
+select * 
+INTO #PartyRole
+from PartyRole 
+where InsuranceApplication_Id = '805C3BE5-FE4B-4042-B05A-00E1E4F2E46E' 
+and Party_Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996' --Address   89  บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
 
---select * from Party where DescriptionTH like 'บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่%'
+--select b.Address1 
+--from InsuranceApplicationRoleContactMechanism a
+--inner join ContactMechanism b on (a.ContactMechanism_Id = b.Id)
+--where a.InsuranceApplicationRole_Id = 'B3738D0E-3751-4D71-B1E9-2C13AA467683'
 
---============================== End Address   89  บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
+--select * from Party where Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996'
+--select * from CompanyRegistration where Organization_Id ='1E4446D4-38E9-44D4-B7A9-53AA92770996' and ThruDate is null
+
+--============================== End Address   89  บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ 0645547000170
 
 Declare @Role_Id uniqueidentifier
 Declare @InApppSource_Id uniqueidentifier
@@ -762,6 +645,16 @@ begin tran
 			ROLLBACK 
 		END
 
+	select d.ReferenceNumber, g.NameTH, h.RegistrationNumber, i.Address1
+	from Agreement a
+	left join PremiumSchedule b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+	left join PaymentApplication c on (b.Id = c.PremiumSchedule_Id)
+	left join Payment d on (c.Payment_Id = d.Id)
+	left join PaymentRole f on (f.Payment_Id = d.Id)
+	inner join OrganizationName g on (f.Party_Id = g.Organization_Id and g.ThruDate is null)
+	inner join CompanyRegistration h on (f.CompanyRegistration_Id = h.Id and g.ThruDate is null )
+	inner join ContactMechanism i on (f.ContactMechanism_Id = i.Id)
+	where a.ReferenceNumber = @RefNo
 --rollback
 commit
 END TRY

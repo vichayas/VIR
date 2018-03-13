@@ -2,8 +2,13 @@
 Create an Invoice
 */
 
+--UPDATE PolicyItemPremium
+--SET PremiumSchedule_Id = null
+--where Id = '82B3E16C-321C-4090-ADB7-6A2B377E776A'
 
-Declare @RefNo varchar(50) = '18502/END/000164-511'
+--select * from Agreement where InsuranceApplication_Id = 'C7D03F55-E6F7-4C4C-98B3-9E79CB679048'
+
+Declare @RefNo varchar(50) = '18181/END/000031-563'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -11,6 +16,9 @@ Declare @Type varchar(3) = RIGHT(LEFT(@RefNo,9),3)
 Declare @BranchId uniqueidentifier
 Declare @PremiumSchedule_Id uniqueidentifier
 Declare @PolicyItemPremiumTarget_Id uniqueidentifier
+Declare @PolicyNo varchar(50)
+
+
 
 print @Type
 print @BranchCode
@@ -19,27 +27,50 @@ print @Subclass
 
 select a.Id as AgreementId,a.InsuranceApplication_Id, b.Id as PremiumScheduleId, c.Id as PaymentApplication, 
 d.ReferenceNumber, d.Id as PaymentId, d.Discriminator,
-f.Id as PaymentRole_Id, e.Id as PolicyItemPremiumId
+f.Id as PaymentRole_Id, e.Id as PolicyItemPremiumId,
+j.Id as DependencyContextItemId
 from Agreement a
 left join PremiumSchedule b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
 left join PaymentApplication c on (b.Id = c.PremiumSchedule_Id)
 left join Payment d on (c.Payment_Id = d.Id)
 left join PaymentRole f on (f.Payment_Id = d.Id)
 left join PolicyItemPremium e on (b.Id = e.PremiumSchedule_Id)
+left join PaymentRole g on (g.Payment_Id = d.Id)
+left join DependencyContextItem j on (j.DependencyContextId = a.InsuranceApplication_Id and (g.PersonIdentification_Id = j.DependencyContextItemId or g.CompanyRegistration_Id = j.DependencyContextItemId))
 where a.ReferenceNumber = @RefNo
 
+--select top 2 * from DocumentRunningRegistration 
+--where YearAD = @yearAD
+--and SubClass = @Subclass
+--and BranchCode = @BranchCode
+--and DescriptionTH like '%RCP%'
+--and DocumentRunningConfigurationAvailability_Id = '86B56355-CADE-47F7-8C15-1B551D0DBF79'
+--order by RunningNumber desc
+
+delete Payment where Id = '986C5D4A-3F64-4150-ACFF-5DA73786972D'
 
 DECLARE @PaymentTarget_Id uniqueidentifier = newId()
 DECLARE @InAppId uniqueidentifier
 DECLARE @InsuranceProductCategory_Id uniqueidentifier
 DECLARE @Disciminator varchar(50)
 DECLARE @UserName varchar(20) = 'vichayas'
+DECLARE @Vat integer = 0
+DECLARE @END_Sequence varchar(2) = null
+DECLARE @VATReferenceBeforeFee float
+DECLARE @VATReferenceAfterFee float
+DECLARE @ReferenceDate varchar(30)
 
 select @InAppId = a.InsuranceApplication_Id, 
       @InsuranceProductCategory_Id = f.InsuranceProductCategoryId,
 	  @BranchId = c.BranchId,
 	  @PremiumSchedule_Id = b.Id,
-	  @PolicyItemPremiumTarget_Id = e.Id
+	  @PolicyItemPremiumTarget_Id = e.Id,
+	  @Vat = b.VatAmount,
+	  @PolicyNo = f.PolicyNumber,
+	  @END_Sequence = f.END_Sequence,
+	  @VATReferenceBeforeFee = b.PremiumAmount+b.StampsDutyAmount,
+	  @VATReferenceAfterFee=0,
+	  @ReferenceDate = a.CreatedDate
 from Agreement a
 inner join InsuranceApplication f on (a.InsuranceApplication_Id = f.Id)
 left join PremiumSchedule b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
@@ -48,27 +79,49 @@ left join Payment d on (c.Payment_Id = d.Id)
 left join PolicyItemPremium e on (b.Id = e.PremiumSchedule_Id)
 where a.ReferenceNumber = @RefNo
 
+print CONCAT('@Vat =',@Vat)
+
 DECLARE @TypeId varchar(100)
 DECLARE @PartyRoleId varchar(100)
+DECLARE @VatReferenceNumber varchar(100)
 		DECLARE @VatDate datetime = NULL
 
-
-		IF @Subclass = '511' or  @Subclass = '515' 
+		IF @Vat < 0
+			BEGIN
+				SET @Disciminator = 'InsuranceCreditNote'
+			   SET @TypeId = '1634B132-4285-4D54-87A9-6A3770A0AD2D'
+			   SET @VatReferenceNumber = @PolicyNo
+				SET @VatDate = GETDATE()
+			END
+		ELSE IF @Subclass = '511' or  @Subclass = '515' 
 		   BEGIN
 			   SET @Disciminator = 'InsuranceTaxInvoice'
 			   SET @TypeId = '1634B132-4285-4D54-87A9-6A3770A0AD2D'
+			   SET @VatReferenceNumber = @PolicyNo
 				SET @VatDate = GETDATE()
+				SET @END_Sequence = null
+				SET  @VATReferenceBeforeFee = null
+				SET  @VATReferenceAfterFee=null
+				SET  @ReferenceDate = null
 		   END
 		 ELSE IF @Subclass = '533' or  @Subclass = '569' 
 		   BEGIN
 			   SET @Disciminator = 'InsuranceCustomerReceipt'
 			   SET @TypeId = '1634B132-4285-4D54-87A9-6A3770A0AD2D'
+				SET @END_Sequence = null
+				SET  @VATReferenceBeforeFee = null
+				SET  @VATReferenceAfterFee=null
+				SET  @ReferenceDate = null
 		   END
 		
 		ELSE
 			BEGIN
 				SET @Disciminator = 'InsuranceCustomerReceipt'
 				SET @TypeId = '2CF5008B-C398-40C4-A173-0DF16969BC3B'
+				SET @END_Sequence = null
+				SET  @VATReferenceBeforeFee = null
+				SET  @VATReferenceAfterFee=null
+				SET  @ReferenceDate = null
 			END
 
 		SELECT @PartyRoleId = Id
@@ -88,7 +141,9 @@ BEGIN TRY
 							ExchangeTotalAfterFee, ExchangeTotalDuty, ExchangeTotalTax,
 							IssuedDate, Discriminator, CreatedDate,
 							CreatedUserId, CreatedUserName, 
-							VATDate)
+							VATDate, VATReferenceNumber, PolicyNumber,
+							VATReferenceBeforeFee , VATReferenceAfterFee ,
+							ReferenceDate , END_Sequence )
 		SELECT @PaymentTarget_Id,  0, 
 			   BranchCode, BranchId, NULL,
 			   1,PremiumAmount,TotalAmount,
@@ -96,7 +151,9 @@ BEGIN TRY
 			   0,0,0,
 			   GETDATE(),@Disciminator,GETDATE(),
 			   'AddPayment', @UserName,
-			   @VatDate
+			   @VatDate, @VatReferenceNumber, @VatReferenceNumber,
+			   @VATReferenceBeforeFee, @VATReferenceAfterFee,
+			   @ReferenceDate, @END_Sequence
 		FROM PremiumSchedule
 		WHERE InsuranceApplication_Id = @InAppId 
 
@@ -104,22 +161,33 @@ BEGIN TRY
 		DECLARE @runningNumberPOL int
 		DECLARE @runningNumber int
 		DECLARE @DocAvailabilityId uniqueidentifier
+		DECLARE @DocRunningConfigId varchar(100)
 
 
 			DECLARE @DocRunConfigId varchar(100)
-		IF (@Subclass = '511' or  @Subclass = '515' )
+		IF @Vat < 0
 			BEGIN
+				SET @DocRunningConfigId =  'ECE2619C-7317-4F88-B44E-ABEF82058308'
 				select @DocRunConfigId  = Id
 				from DocumentRunningConfigurationAvailability 
 				WHERE InsuranceProductCategory_Id = @InsuranceProductCategory_Id
-				and DocumentRunningConfiguration_Id = '1B7AD7C7-41AF-4C81-9D7D-E288E3E8EA44' --VAT
+				and DocumentRunningConfiguration_Id = @DocRunningConfigId --DEC
+			END
+		ELSE IF (@Subclass = '511' or  @Subclass = '515' )
+			BEGIN
+				SET @DocRunningConfigId =  '1B7AD7C7-41AF-4C81-9D7D-E288E3E8EA44' 
+				select @DocRunConfigId  = Id
+				from DocumentRunningConfigurationAvailability 
+				WHERE InsuranceProductCategory_Id = @InsuranceProductCategory_Id
+				and DocumentRunningConfiguration_Id = @DocRunningConfigId --VAT
 			END;
 		ELSE
 			BEGIN
+				SET @DocRunningConfigId =  '5DE8D973-A89F-400B-BEDB-3492620CE8B9'
 				select @DocRunConfigId  = Id
 				from DocumentRunningConfigurationAvailability 
 				WHERE InsuranceProductCategory_Id = @InsuranceProductCategory_Id
-				and DocumentRunningConfiguration_Id = '5DE8D973-A89F-400B-BEDB-3492620CE8B9' --RCP
+				and DocumentRunningConfiguration_Id = @DocRunningConfigId --RCP
 			END;
 	
 		print CONCAT('1. Insert #DocumentRunningRegistration 1 DocId =',@DocRunConfigId, ' Subclass = ',@Subclass,' Branc = ',@BranchCode)
@@ -142,10 +210,8 @@ BEGIN TRY
 		if(@runningNumber is null)
 			SET @runningNumber = 1
 
-		IF (@Subclass = '511' or  @Subclass = '515')
-			select @refNo = dbo.GenReferenceNumber(@runningNumber,0,1,@BranchCode,@Subclass,@yearAD,NULL)
-		ELSE
-			select @refNo = dbo.GenReferenceNumber(@runningNumber,0,0,@BranchCode,@Subclass,@yearAD,NULL)
+			select @refNo = dbo.GenReferenceNumber2(@runningNumber,@BranchCode,@Subclass,@yearAD,NULL,@DocRunningConfigId)
+
 
 		if(@runningNumber = 1)
 			BEGIN
@@ -212,7 +278,7 @@ BEGIN TRY
 								OrganizationName_Id, CompanyRegistration_Id,
 								ContactMechanism_Id,PaymentRoleType_Id,
 										CreatedDate, CreatedUserId, CreatedUserName)
-		select  newId(), 1, @BranchCode, @BranchId,
+		select top 1 newId(), 1, @BranchCode, @BranchId,
 				@PaymentTarget_Id, a.Id as PartyRole_Id, a.[Type_Id],
 				a.Party_Id, e.Id as PersonName_Id,i.Id as  PersonIdentification_Id, 
 				c.Id as PartyClassificationTH_Id, d.Id as PartyClassificationEN_Id,
