@@ -73,8 +73,8 @@ print @InAppTarget_Id
 print @numCur
 print @numParent
 
---IF @numCur > @numParent
---	BEGIN
+IF @numCur > @numParent
+	BEGIN
 			--============ Find the people not in Parent
 			select * 
 			INTO #PartyRole
@@ -113,7 +113,10 @@ print @numParent
 			)
 
 				--============= Create InsuranceApplicationItem Mapping ID
-				select c.Id as Id, newId() as NewId, c.Discriminator
+				select c.Id as Id, newId() as NewId, c.Discriminator, (CASE  
+																				WHEN c.Parent_Id is null THEN 1
+																				WHEN c.Parent_Id is not null THEN 0
+																			END) as IsParent
 				INTO #InsuranceApplicationItem_Map
 				from InsuranceApplicationRoleItem a
 				inner join PartyRole b on (a.InsuranceApplicationRole_Id = b.Id)
@@ -129,7 +132,7 @@ print @numParent
 
 			
 			DECLARE @parentId uniqueidentifier 
-			select @parentId = [NewId] from #InsuranceApplicationItem_Map where Discriminator = 'InsuranceApplicationItem'
+			select @parentId = [NewId] from #InsuranceApplicationItem_Map where IsParent = 1
 
 			Update #InsuranceApplicationItem
 			SET Id = @parentId,

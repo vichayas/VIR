@@ -8,7 +8,7 @@ Create an Invoice
 
 --select * from Agreement where InsuranceApplication_Id = 'C7D03F55-E6F7-4C4C-98B3-9E79CB679048'
 
-Declare @RefNo varchar(50) = '18181/END/000031-563'
+Declare @RefNo varchar(50) = '18181/END/000061-574'
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -44,7 +44,7 @@ where a.ReferenceNumber = @RefNo
 --and SubClass = @Subclass
 --and BranchCode = @BranchCode
 --and DescriptionTH like '%RCP%'
---and DocumentRunningConfigurationAvailability_Id = '86B56355-CADE-47F7-8C15-1B551D0DBF79'
+--and DocumentRunningConfigurationAvailability_Id = 'E16E5273-6654-4D3B-884D-26CC161F3AD5'
 --order by RunningNumber desc
 
 delete Payment where Id = '986C5D4A-3F64-4150-ACFF-5DA73786972D'
