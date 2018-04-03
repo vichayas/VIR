@@ -42,5 +42,45 @@ where c.ThruDate is null and a.Discriminator = 'BaseInsurancePolicy'
 group by a.ReferenceNumber,a.CreatedDate,d.DescriptionTH,
 		 t.PolicyReference, t.PolicyCreateDate, t.PolicyItems,t.PolicyMaxPremium,t.PolicyStatus,t.PolicyItemType,t.PolicyItemTypeId
 ) as t2
-where t2.BaseItems = 0 and t2.PolicyItemTypeId = 'F89579DB-7C44-409F-8D50-A0061D29D04E'
-order by t2.BaseReference
+where t2.BaseItems = 0 and t2.PolicyItemTypeId = 'F89579DB-7C44-409F-8D50-A0061D29D04E' --ประเภทใบคำขอ
+order by t2.PolicyCreateDate
+
+
+select b.ReferenceNumber, b.CreatedDate, a.TotalBeforeFee
+from InsuranceApplicationItem a
+inner join Agreement b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+where InsuranceApplicationItemType_Id = 'F89579DB-7C44-409F-8D50-A0061D29D04E' 
+and (TotalBeforeFee = 0 or TotalBeforeFee is null)
+and b.ReferenceNumber is not null
+and b.Discriminator = 'BaseInsurancePolicy' 
+order by b.ReferenceNumber 
+
+select * from Endorsement where Id in ('A6506CC5-01FD-4600-8FF4-AFE2B6227965'
+,'5FC52550-A0F1-4892-B39F-AB5B31258C3D')
+
+select b.ReferenceNumber, b.ModifiedDate, a.TotalBeforeFee,b.ApplicantEndorsementCategoryId
+from InsuranceApplicationItem a
+inner join Agreement b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+where InsuranceApplicationItemType_Id = 'F89579DB-7C44-409F-8D50-A0061D29D04E' 
+and (TotalBeforeFee = 0 or TotalBeforeFee is null)
+and b.ReferenceNumber is not null
+and b.Discriminator = 'ApplicantEndorsement' 
+and b.ApplicantEndorsementCategoryId not in ('675860EE-F32F-44E5-92F0-670848083E87','A6506CC5-01FD-4600-8FF4-AFE2B6227965')
+order by b.ReferenceNumber 
+
+select  b.InsuranceApplicationItemType_Id, c.DescriptionTH, Sum(b.TotalBeforeFee)
+from Agreement a
+inner join InsuranceApplicationItem b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+inner join InsuranceApplicationItemType c on (b.InsuranceApplicationItemType_Id = c.Id)
+where a.ReferenceNumber = '18504/END/000001-511'
+group by  b.InsuranceApplicationItemType_Id, c.DescriptionTH
+
+
+select  b.InsuranceApplicationItemType_Id, c.DescriptionTH, Sum(b.TotalBeforeFee)
+from Agreement a
+inner join InsuranceApplicationItem b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
+inner join InsuranceApplicationItemType c on (b.InsuranceApplicationItemType_Id = c.Id)
+where a.ReferenceNumber = '17504/POL/000309-511'
+and a.Discriminator = 'InsurancePolicy' 
+group by  b.InsuranceApplicationItemType_Id, c.DescriptionTH
+

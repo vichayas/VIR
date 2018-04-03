@@ -1,10 +1,11 @@
 ----- Process
 DECLARE @Agreement_Id uniqueidentifier
 DECLARE @InAppPolicy_Id uniqueidentifier		-- insured
-DECLARE @InAppBase_Id uniqueidentifier		-- base
+DECLARE @InAppAPE_Id uniqueidentifier		-- base
 DECLARE @Policy_Ref nvarchar(30)
 DECLARE @End_sequence int
-DECLARE @ReferenceNumber nvarchar(30) = '17502/POL/001025-511'
+DECLARE @ReferenceNumberPol nvarchar(30) = '17181/POL/000160-520'
+DECLARE @ReferenceNumberAPE nvarchar(30) = '18181/APE/000168-520'
 
 DECLARE @numInsuredPolicy int
 DECLARE @numInsuredBase int
@@ -12,16 +13,16 @@ DECLARE @numInsuredBase int
 
 select	@InAppPolicy_Id = InsuranceApplication_Id
 from	Agreement 
-where	ReferenceNumber = @ReferenceNumber 
+where	ReferenceNumber = @ReferenceNumberPol 
 and		Discriminator = 'InsurancePolicy'
 
-select	@InAppBase_Id = InsuranceApplication_Id
+select	@InAppAPE_Id = InsuranceApplication_Id
 from	Agreement 
-where	ReferenceNumber = @ReferenceNumber 
-and		Discriminator = 'BaseInsurancePolicy'
+where	ReferenceNumber = @ReferenceNumberAPE 
+
 
 --=== Parent RefernecNumber
-SELECT top 1 * FROM Agreement WHERE InsuranceApplication_Id = @InAppBase_Id order by ModifiedDate DESC
+SELECT top 1 * FROM Agreement WHERE InsuranceApplication_Id = @InAppAPE_Id order by ModifiedDate DESC
 
 --== PartyRoles of InsurancePolicy
 select @numInsuredPolicy = count(1) 
@@ -30,18 +31,18 @@ where InsuranceApplication_Id = @InAppPolicy_Id and -- Current Policy/Endorse
 Party_Id is not null and
 [Type_Id] is not null 
 
---== PartyRoles of Base
+--== PartyRoles of APE
 
 select @numInsuredBase = count(a.Id) 
 from PartyRole a
 inner join Agreement b on (b.InsuranceApplication_Id = a.InsuranceApplication_Id)
-where ReferenceNumber = @Policy_Ref and b.Discriminator = 'BaseInsurancePolicy' and -- Parent of Current Policy/Endorse
+where ReferenceNumber = @ReferenceNumberAPE and -- Parent of Current Policy/Endorse
 Party_Id is not null and
 a.[Type_Id] is not null
 
 print @Agreement_Id
 print @InAppPolicy_Id
-print @InAppBase_Id
+print @InAppAPE_Id
 print @numInsuredPolicy
 print @numInsuredBase
 
@@ -58,14 +59,14 @@ IF @numInsuredPolicy > @numInsuredBase
 			(
 			select Party_Id 
 			from PartyRole 
-			where InsuranceApplication_Id = @InAppBase_Id and --Parent of Current
+			where InsuranceApplication_Id = @InAppAPE_Id and --Parent of Current
 			Party_Id is not null
 			)
 
 			
 			Update #PartyRole
 			SET Id = newId() ,
-			InsuranceApplication_Id = @InAppBase_Id
+			InsuranceApplication_Id = @InAppAPE_Id
 			--============== End insert to #Base
 
 			--================== InsertData To #InsuranceApplicationItem
@@ -81,7 +82,7 @@ IF @numInsuredPolicy > @numInsuredBase
 			(
 				select Party_Id 
 				from PartyRole 
-				where InsuranceApplication_Id = @InAppBase_Id and --BaseInsurancePolicy
+				where InsuranceApplication_Id = @InAppAPE_Id and --BaseInsurancePolicy
 				Party_Id is not null
 			)
 
@@ -119,7 +120,7 @@ IF @numInsuredPolicy > @numInsuredBase
 				(
 					select Party_Id 
 					from PartyRole 
-					where InsuranceApplication_Id = @InAppBase_Id and --BaseInsurancePolicy
+					where InsuranceApplication_Id = @InAppAPE_Id and --BaseInsurancePolicy
 					Party_Id is not null
 				)
 
@@ -129,7 +130,7 @@ IF @numInsuredPolicy > @numInsuredBase
 
 			Update #InsuranceApplicationItem 
 			SET Id = a.[NewId],
-			InsuranceApplication_Id = @InAppBase_Id 
+			InsuranceApplication_Id = @InAppAPE_Id 
 			FROM #InsuranceApplicationItem_Map a
 			WHERE #InsuranceApplicationItem.Id = a.Id
 			AND InsuranceApplication_Id is not null
@@ -143,7 +144,7 @@ IF @numInsuredPolicy > @numInsuredBase
 
 			UPDATE #InsuranceApplicationItem
 			SET Id = a.new_Parent_Id,
-			InsuranceApplication_Id = @InAppBase_Id 
+			InsuranceApplication_Id = @InAppAPE_Id 
 			FROM #Parent_Map a
 			WHERE #InsuranceApplicationItem.Id = a.Parent_Id
 
@@ -167,7 +168,7 @@ IF @numInsuredPolicy > @numInsuredBase
 			(
 				select Party_Id 
 				from PartyRole 
-				where InsuranceApplication_Id = @InAppBase_Id and --BaseInsurancePolicy
+				where InsuranceApplication_Id = @InAppAPE_Id and --BaseInsurancePolicy
 				Party_Id is not null
 			)
 
@@ -188,7 +189,7 @@ IF @numInsuredPolicy > @numInsuredBase
 				(
 					select Party_Id 
 					from PartyRole 
-					where InsuranceApplication_Id = @InAppBase_Id and --BaseInsurancePolicy
+					where InsuranceApplication_Id = @InAppAPE_Id and --BaseInsurancePolicy
 					Party_Id is not null
 				)
 			)
@@ -212,7 +213,7 @@ IF @numInsuredPolicy > @numInsuredBase
 			(
 				select Party_Id 
 				from PartyRole 
-				where InsuranceApplication_Id = @InAppBase_Id and --BaseInsurancePolicy
+				where InsuranceApplication_Id = @InAppAPE_Id and --BaseInsurancePolicy
 				Party_Id is not null
 			)
 			DECLARE @HavePayment int = @@ROWCOUNT
@@ -231,7 +232,7 @@ IF @numInsuredPolicy > @numInsuredBase
 
 					select @PremiumScheduleId = Id
 					from PremiumSchedule
-					where InsuranceApplication_Id = @InAppBase_Id
+					where InsuranceApplication_Id = @InAppAPE_Id
 
 					select @ItemPaymentId = InsuranceApplicationItem_Id,
 							@RoleItemPaymentId = Id 
@@ -246,6 +247,15 @@ IF @numInsuredPolicy > @numInsuredBase
 					FROM #PolicyItemPremium polItem
 						inner join #InsuranceApplicationItem_Map map on (polItem.InsuranceApplicationItem_Id = map.Id)
 						inner join #InsuranceApplicationRoleItem rolItem on (map.[NewId] = rolItem.InsuranceApplicationItem_Id)
+					
+					UPDATE polItem
+					SET PremiumAmount = b.PremiumAmount,
+						StampsDutyAmount = b.StampsDutyAmount,
+						SubTotalAmount = b.TotalAmount
+					FROM #PolicyItemPremium polItem
+						inner join PremiumSchedule b on (polItem.PremiumSchedule_Id = b.Id)
+					where InsuranceApplication_Id = @InAppAPE_Id
+					and polItem.PremiumAmount != 0
 
 				END
 
