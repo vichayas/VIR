@@ -23,11 +23,11 @@ select t.TABLE_SCHEMA, t.TableName, t.[Rows]  FROM (
 											INNER JOIN 
 												 sys.columns co  ON (co.object_id = t.object_id)
 											WHERE 
-												t.NAME NOT LIKE '_endorse%' AND
+												--t.NAME NOT LIKE '_endorse%' AND
 												i.OBJECT_ID > 255 AND   
 												i.index_id <= 1 AND
-												it.TABLE_TYPE = 'BASE TABLE' AND
-												co.name in ('Modifiedusername','CreatedDate','ModifiedDate')
+												it.TABLE_TYPE = 'BASE TABLE' --AND
+												--co.name in ('Modifiedusername','CreatedDate','ModifiedDate')
 											GROUP BY 
 												it.TABLE_SCHEMA,t.NAME, i.object_id, i.index_id, i.name, p.[Rows]
 									)  t

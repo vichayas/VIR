@@ -7,7 +7,7 @@ union
 select b.* 
 from Agreement a
 inner join InsuranceApplicationItem b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
-where a.ReferenceNumber = '18181/POL/000005-520'
+where a.ReferenceNumber = '17181/POL/000053-563'
 and a.Discriminator = 'InsurancePolicy' 
 --and Parent_Id is null
 and b.InsuranceApplicationItemType_Id = 'F89579DB-7C44-409F-8D50-A0061D29D04E'
@@ -18,7 +18,7 @@ select b.*
 --into #InsuranceApplicationItem
 from Agreement a
 inner join InsuranceApplicationItem b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
-where a.ReferenceNumber = '18108/POL/000006-520'
+where a.ReferenceNumber =  '17181/POL/000053-563'
 and a.Discriminator = 'InsurancePolicy' 
 --and Parent_Id is null
 and b.InsuranceApplicationItemType_Id = 'F89579DB-7C44-409F-8D50-A0061D29D04E'
@@ -26,10 +26,49 @@ and b.InsuranceApplicationItemType_Id = 'F89579DB-7C44-409F-8D50-A0061D29D04E'
 select b.* 
 from Agreement a
 inner join InsuranceApplicationItem b on (a.InsuranceApplication_Id = b.InsuranceApplication_Id)
-where a.ReferenceNumber = '18108/POL/000006-520'
+where a.ReferenceNumber =  '17181/POL/000053-563'
 and a.Discriminator = 'BaseInsurancePolicy' 
 --and Parent_Id is null
 and b.InsuranceApplicationItemType_Id = 'F89579DB-7C44-409F-8D50-A0061D29D04E'
+select c.*
+from PartyRole a
+inner join InsuranceApplicationRoleItem b on(a.Id = b.InsuranceApplicationRole_Id)
+inner join InsuranceApplicationItem c on (b.InsuranceApplicationItem_Id = c.Id)
+where a.InsuranceApplication_Id = 'C6DDD77B-3D1A-42FA-9B1D-D39139CE8FA2'
+and a.SequenceNo=30
+
+
+select c.*
+from PartyRole a
+inner join InsuranceApplicationRoleItem b on(a.Id = b.InsuranceApplicationRole_Id)
+inner join InsuranceApplicationItem c on (b.InsuranceApplicationItem_Id = c.Id)
+where a.InsuranceApplication_Id = 'C6DDD77B-3D1A-42FA-9B1D-D39139CE8FA2'
+and a.SequenceNo=35
+
+UPDATE c
+SET Amount = 4173,
+	TotalBeforeFee = 4173,
+	TotalAfterFee = 4190,
+	ExchangeTotalDuty = 4173,
+	ExchangeTotalTax = 4173,
+	PrimaryCoverageLevel = 20000,
+	TotalDuty = 17,
+	InsuranceRateValue = 20.865,
+	ExchangeTotalBeforeFee = 4173,
+	ExchangeTotalAfterFee = 0
+from PartyRole a
+inner join InsuranceApplicationRoleItem b on(a.Id = b.InsuranceApplicationRole_Id)
+inner join InsuranceApplicationItem c on (b.InsuranceApplicationItem_Id = c.Id)
+where a.InsuranceApplication_Id = 'C6DDD77B-3D1A-42FA-9B1D-D39139CE8FA2'
+and a.SequenceNo=35
+
+
+UPDATE InsuranceApplicationItem
+SET TotalBeforeFee=197247,
+	TotalAfterFee=198036,
+	TotalDuty=789,
+	PrimaryCoverageLevel = 780000
+WHERE Id = '2981AC54-36FB-4BAB-B3F5-E04F6C0D247E'
 
 select d.* 
 from Agreement a

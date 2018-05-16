@@ -1,4 +1,4 @@
-select a.ReferenceNumber,a2.ReferenceNumber, ia.PolicyNumber, ia.END_Sequence, c1.DescriptionTH, c2.DescriptionTH, iai.TotalBeforeFee, iai.TotalAfterFee, iai.TotalDuty, b.EndorsementType_Id
+select a.ReferenceNumber,a2.ReferenceNumber, ia.PolicyNumber, ia.END_Sequence, c1.Id, c1.DescriptionTH, c2.DescriptionTH, iai.TotalBeforeFee, iai.TotalAfterFee, iai.TotalDuty, b.EndorsementType_Id
 ,b.InsuranceApplication_Id
  from Agreement a
  inner join  Agreement a2 on (a.InsuranceApplication_Id = a2.InsuranceApplication_Id and a2.Discriminator = 'InsuranceEndorsement')
@@ -8,7 +8,7 @@ select a.ReferenceNumber,a2.ReferenceNumber, ia.PolicyNumber, ia.END_Sequence, c
  inner join InsuranceApplication ia on (ia.Id = a.InsuranceApplication_Id)
  inner join ApplicantEndorsementItem api on (a.Id = api.ApplicantEndorsement_Id and b.EndorsementType_Id = api.EndorsementType_Id)
 inner join InsuranceApplicationItem iai on (api.InsuranceApplication_Id =iai.InsuranceApplication_Id)
-  where a2.ReferenceNumber = '18205/END/000002-511'  and iai.InsuranceApplicationItemType_Id='213F8708-FCC2-4430-A804-A1D115F718C5' 
+  where a2.ReferenceNumber = '16703/END/000004-511'  and iai.InsuranceApplicationItemType_Id='213F8708-FCC2-4430-A804-A1D115F718C5' 
   order by c2.DescriptionTH, iai.TotalAfterFee
 
 select InsuranceApplicationItem.*

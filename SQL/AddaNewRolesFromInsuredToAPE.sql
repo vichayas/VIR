@@ -46,8 +46,8 @@ print @InAppAPE_Id
 print @numInsuredPolicy
 print @numInsuredBase
 
-IF @numInsuredPolicy > @numInsuredBase
-	BEGIN
+--IF @numInsuredPolicy > @numInsuredBase
+--	BEGIN
 			--============ Find the people not in Base
 			select * 
 			INTO #PartyRole
@@ -86,17 +86,27 @@ IF @numInsuredPolicy > @numInsuredBase
 				Party_Id is not null
 			)
 
-			--Update missing InAppItem
-			INSERT into #InsuranceApplicationItem
-			select * from InsuranceApplicationItem 
-			where InsuranceApplication_Id = @InAppPolicy_Id
-			and Id not in
+				--Update missing InAppItem
+				--INSERT into #InsuranceApplicationItem
+				--select * from InsuranceApplicationItem 
+				--where InsuranceApplication_Id = @InAppPolicy_Id
+				--and Id not in
+				--	(
+				--		select c.Id
+				--		from InsuranceApplicationRoleItem a
+				--		inner join PartyRole b on (a.InsuranceApplicationRole_Id = b.Id)
+				--		inner join InsuranceApplicationItem c on (a.InsuranceApplicationItem_Id = c.Id)
+				--		where b.InsuranceApplication_Id = @InAppPolicy_Id
+				--	)
+
+				INSERT into #InsuranceApplicationItem
+				select * from InsuranceApplicationItem 
+				where InsuranceApplication_Id = @InAppAPE_Id
+				and InsuranceApplicationItemType_Id not in
 				(
-					select c.Id
-					from InsuranceApplicationRoleItem a
-					inner join PartyRole b on (a.InsuranceApplicationRole_Id = b.Id)
-					inner join InsuranceApplicationItem c on (a.InsuranceApplicationItem_Id = c.Id)
-					where b.InsuranceApplication_Id = @InAppPolicy_Id
+					select c.InsuranceApplicationItemType_Id
+					from InsuranceApplicationItem c
+					where c.InsuranceApplication_Id = @InAppAPE_Id
 				)
 
 				--============= Create InsuranceApplicationParentMapping 
@@ -266,7 +276,7 @@ IF @numInsuredPolicy > @numInsuredBase
 	
 					INSERT INTO InsuranceApplicationItem
 					select * from #InsuranceApplicationItem
-					--select * from #Parent_Map
+					select * from #InsuranceApplicationItem_Map
 
 					INSERT INTO InsuranceApplicationRoleItem
 					select * from #InsuranceApplicationRoleItem

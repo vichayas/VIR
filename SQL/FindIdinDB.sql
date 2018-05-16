@@ -45,7 +45,7 @@ from sys.columns c
 WHERE t.[is_ms_shipped] = 0
 		--and c.name='ModifiedDate'
 		and c.max_length = 16
-		and c.name like '%Id'
+		and c.name like 'Id'
 order by table_name
 
 
@@ -61,7 +61,7 @@ fetch next from curtablename into @t_name,@c_name
 while(@@FETCH_STATUS=0)
 begin
 
-	set @sql='insert into #tablename select Name = '''+@t_name +''',C_NAME = '''+@c_name +''' from ['+@t_name +'] with (nolock) where '+@c_name+' = ''DB0635B0-4C32-41E8-AD2B-DBD653322BD9'''
+	set @sql='insert into #tablename select Name = '''+@t_name +''',C_NAME = '''+@c_name +''' from ['+@t_name +'] with (nolock) where '+@c_name+' = ''2e7d8ae9-ca4f-46ae-97c1-d5060ac1e2e2'''
 	execute sp_executesql @sql;
 	print @sql
 	/*execute sp_executesql @sql,N'@cDate nvarchar(19), @curdate nvarchar(8),@cnt int OUTPUT',@cDate,@curdate,@cnt OUTPUT	

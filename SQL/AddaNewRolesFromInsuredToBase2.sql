@@ -4,7 +4,7 @@ DECLARE @InAppPolicy_Id uniqueidentifier		-- insured
 DECLARE @InAppBase_Id uniqueidentifier		-- base
 DECLARE @Policy_Ref nvarchar(30)
 DECLARE @End_sequence int
-DECLARE @ReferenceNumber nvarchar(30) = '17502/POL/001025-511'
+DECLARE @ReferenceNumber nvarchar(30) = '17181/POL/000053-563'
 
 DECLARE @numInsuredPolicy int
 DECLARE @numInsuredBase int
@@ -123,7 +123,19 @@ IF @numInsuredPolicy > @numInsuredBase
 					Party_Id is not null
 				)
 
-			
+				select a.Id as Id, newId() as NewId, 'TTTT' as Discriminator
+				 INTO #InsuranceApplicationItem_Map2
+				from #InsuranceApplicationItem a
+				where  a.Id not in (select Id from #InsuranceApplicationItem_Map)
+
+
+				INSERT INTO #InsuranceApplicationItem_Map
+				SELECT * FROM #InsuranceApplicationItem_Map2 a
+				
+				delete from #InsuranceApplicationItem_Map
+				where Id in (select Parent_Id from #Parent_Map)
+				
+				drop table #InsuranceApplicationItem_Map2
 			
 			--================= Update #InsuranceApplicationItem
 
@@ -139,7 +151,7 @@ IF @numInsuredPolicy > @numInsuredBase
 			SET Id = a.[NewId]
 			FROM #InsuranceApplicationItem_Map a
 			WHERE #InsuranceApplicationItem.Id = a.Id
-			AND InsuranceApplication_Id is  null and #InsuranceApplicationItem.Id not in (select Parent_Id from #Parent_Map)
+			--AND InsuranceApplication_Id is  null and #InsuranceApplicationItem.Id not in (select Parent_Id from #Parent_Map)
 
 			UPDATE #InsuranceApplicationItem
 			SET Id = a.new_Parent_Id,
@@ -281,7 +293,8 @@ IF @numInsuredPolicy > @numInsuredBase
 					ROLLBACK
 					--COMMIT
 			END CATCH
-	
+				select * from #InsuranceApplicationItem
+			select * from #InsuranceApplicationItem_Map
 			drop table #InsuranceApplicationRoleItem
 			drop table #InsuranceApplicationItem
 			drop table #InsuranceApplicationItem_Map

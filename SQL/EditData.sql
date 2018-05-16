@@ -1,4 +1,4 @@
-﻿Declare @RefNo varchar(50) = '18502/APP/000458-511' ---17502/APP/000109-511,18502/APP/000178-511
+﻿Declare @RefNo varchar(50) = '18502/APP/000502-511' ---17502/APP/000109-511,18502/APP/000178-511
 DECLARE @yearAD varchar(3) = LEFT(@RefNo,2)
 Declare @Subclass varchar(3) = RIGHT(@RefNo,3)
 Declare @BranchCode varchar(3) = RIGHT(LEFT(@RefNo,5),3)
@@ -258,24 +258,24 @@ DECLARE @PartyId varchar(100)-- = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 --============================== End Address   16/12 บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด สาขาแม่สอด สาขาที่ 00001 0635542000155
 
 
---select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
---INTO #RoleContactMechanismMap
---from Party a
---inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
---inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
---inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
---inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
---where a.Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address  127 ตาก
---and c.Address1 like 'เลขที่ 127%'
---order by c.CreatedDate DESC
+select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
+INTO #RoleContactMechanismMap
+from Party a
+inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
+inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
+inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+where a.Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address  127 ตาก
+and c.Address1 like 'เลขที่ 127%'
+order by c.CreatedDate DESC
 
 
---select * 
---INTO #PartyRole
---from PartyRole 
---where InsuranceApplication_Id = 'FD6B2AFD-97D3-4F9F-AB5E-BBD7C13D7B01' 
---and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address 127 
---and DescriptionTH like '%บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
+select * 
+INTO #PartyRole
+from PartyRole 
+where InsuranceApplication_Id = 'FD6B2AFD-97D3-4F9F-AB5E-BBD7C13D7B01' 
+and Party_Id = 'D3069434-045D-478E-92DB-7FD81C6C2D8A' --Address 127 
+and DescriptionTH like '%บริษัท อีซูซุตากฮกอันตึ๊ง จำกัด%'
 
 --select b.Address1 
 --from InsuranceApplicationRoleContactMechanism a
@@ -348,21 +348,21 @@ DECLARE @PartyId varchar(100)-- = '955B59C8-0236-4007-B13C-7A37AD2E5EAE'
 
 
 --==============================
-select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
-INTO #RoleContactMechanismMap
-from Party a
-inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
-inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
-inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
-inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
-where a.Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996'  --Address  89 บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
-order by c.CreatedDate DESC
+--select top 2 c.Id as ContactMechanism_Id, e.Id as ContactMechanismPurposeType_Id, c.Address1
+--INTO #RoleContactMechanismMap
+--from Party a
+--inner join PartyContactMechanism  b on (a.Id = b.Party_Id)
+--inner join ContactMechanism c on (b.ContactMechanism_Id = c.Id)
+--inner join PartyContactMechanismPurpose d on (b.Id = d.PartyContactMechanism_Id)
+--inner join ContactMechanismPurposeType e on (d.[Type_Id] = e.Id)
+--where a.Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996'  --Address  89 บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
+--order by c.CreatedDate DESC
 
-select * 
-INTO #PartyRole
-from PartyRole 
-where InsuranceApplication_Id = '805C3BE5-FE4B-4042-B05A-00E1E4F2E46E' 
-and Party_Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996' --Address   89  บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
+--select * 
+--INTO #PartyRole
+--from PartyRole 
+--where InsuranceApplication_Id = '805C3BE5-FE4B-4042-B05A-00E1E4F2E46E' 
+--and Party_Id = '1E4446D4-38E9-44D4-B7A9-53AA92770996' --Address   89  บริษัท สุโขทัย พี แอนด์ วาย มอเตอร์ จำกัด สำนักงานใหญ่ง
 
 --select b.Address1 
 --from InsuranceApplicationRoleContactMechanism a
